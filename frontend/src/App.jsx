@@ -34,56 +34,37 @@ function App() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
       {/* Header */}
-      <header className="bg-green-600 text-white p-4 text-center text-2xl font-bold shadow-md">
-        <span className="inline-flex items-center space-x-2">
-          <span>🌾 RMT Equipment Manager</span>
-          <span className="soft-bounce">🚜</span>
-          <span>🌾</span>
-        </span>
-        <style>{`
-          @keyframes softBounce {
-            0%, 100% {
-              transform: translateY(0);
-            }
-            50% {
-              transform: translateY(-8px);
-            }
-          }
-          .soft-bounce {
-            animation: softBounce 1.5s infinite;
-          }
-        `}</style>
+      <header className="bg-green-600 text-white flex items-center justify-between p-4 shadow-md">
+        <h1 className="text-2xl font-bold flex items-center">
+          🌾 RMT Equipment Manager
+        </h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition text-sm"
+        >
+          Logout
+        </button>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto p-4 space-y-10">
+      <main className="container mx-auto p-6 flex-grow space-y-8">
 
-        {/* Logout Button */}
-        <div className="flex justify-end">
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
-
-        {/* Add New Equipment */}
-        <section className="bg-white p-6 rounded-2xl shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Add New Equipment</h2>
+        {/* Add Equipment */}
+        <section className="bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 text-green-700">Add New Equipment</h2>
           <AddEquipmentForm onAdd={loadEquipment} />
         </section>
 
-        {/* Equipment Dashboard */}
-        <section className="bg-white p-6 rounded-2xl shadow-lg">
+        {/* Equipment List */}
+        <section className="bg-white p-6 rounded-xl shadow-md">
           <EquipmentList equipment={equipment} onDelete={loadEquipment} />
         </section>
 
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-300 p-4 text-center">
-        © 2025 RMT Equipment. All rights reserved.
+      <footer className="bg-gray-800 text-gray-300 p-4 text-center text-sm">
+        © 2025 RMT Equipment Manager. All rights reserved.
       </footer>
 
     </div>
