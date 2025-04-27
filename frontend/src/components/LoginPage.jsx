@@ -5,9 +5,7 @@ function LoginPage({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Simple hardcoded password (later you can connect to real API)
-    if (password === 'rmt1234') {
+    if (password === 'admin') {
       onLogin();
     } else {
       alert('Incorrect password');
@@ -15,24 +13,28 @@ function LoginPage({ onLogin }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-4">Login to RMT Equipment Manager</h1>
-      <form onSubmit={handleSubmit} className="space-y-4 w-64">
-        <input
-          type="password"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="block w-full border p-2 rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-green-500 text-white p-2 rounded hover:bg-green-600 w-full"
-        >
-          Login
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-green-50">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-80 space-y-6">
+        <h1 className="text-2xl font-bold text-center text-green-600">
+          Login to RMT Equipment Manager
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl transition-all"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

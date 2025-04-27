@@ -1,105 +1,98 @@
 import React, { useState } from 'react';
 import { addEquipment } from '../api/equipment';
 
-function AddEquipmentForm({ onAdd }) {  // ✅ Accepts onAdd as a prop
+function AddEquipmentForm({ onAdd }) {
   const [formData, setFormData] = useState({
     name: '',
     type: '',
-    status: '',
-    rental_date: '',
+    status: 'Available',
+    available_date: '',
     return_date: '',
     notes: '',
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addEquipment(formData)
-      .then((res) => {
-        alert('Equipment added successfully!');
-        setFormData({
-          name: '',
-          type: '',
-          status: '',
-          rental_date: '',
-          return_date: '',
-          notes: '',
-        });
-        onAdd();  // ✅ Refresh the equipment list after adding
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Error adding equipment.');
+    try {
+      await addEquipment(formData);
+      onAdd();
+      setFormData({
+        name: '',
+        type: '',
+        status: 'Available',
+        available_date: '',
+        return_date: '',
+        notes: '',
       });
+    } catch (error) {
+      console.error('Error adding equipment:', error);
+    }
   };
 
   return (
-    <div className="p-4 mb-8">
-      <h2 className="text-xl font-bold mb-4">Add New Equipment</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Name"
-          className="block w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          placeholder="Type"
-          className="block w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          placeholder="Status"
-          className="block w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="date"
-          name="rental_date"
-          value={formData.rental_date}
-          onChange={handleChange}
-          className="block w-full border p-2 rounded"
-        />
-        <input
-          type="date"
-          name="return_date"
-          value={formData.return_date}
-          onChange={handleChange}
-          className="block w-full border p-2 rounded"
-        />
-        <textarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          placeholder="Notes"
-          className="block w-full border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Add Equipment
-        </button>
-      </form>
-    </div>
+    <form
+      onSubmit={handleSubmit}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10"
+    >
+      <input
+        type="text"
+        name="name"
+        placeholder="Name"
+        value={formData.name}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        required
+      />
+      <input
+        type="text"
+        name="type"
+        placeholder="Type"
+        value={formData.type}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        required
+      />
+      <select
+        name="status"
+        value={formData.status}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+      >
+        <option value="Available">Available</option>
+        <option value="Rented">Rented</option>
+      </select>
+      <input
+        type="date"
+        name="available_date"
+        value={formData.available_date}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+      <input
+        type="date"
+        name="return_date"
+        value={formData.return_date}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+      <textarea
+        name="notes"
+        placeholder="Notes"
+        value={formData.notes}
+        onChange={handleChange}
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 md:col-span-2 lg:col-span-3"
+      />
+      <button
+        type="submit"
+        className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-all md:col-span-2 lg:col-span-3"
+      >
+        Add Equipment
+      </button>
+    </form>
   );
 }
 

@@ -15,8 +15,10 @@ function App() {
   };
 
   useEffect(() => {
-    loadEquipment();
-  }, []);
+    if (loggedIn) {
+      loadEquipment();
+    }
+  }, [loggedIn]);
 
   const handleLogin = () => {
     setLoggedIn(true);
@@ -31,40 +33,43 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-
+    <div className="min-h-screen bg-green-50 flex flex-col">
+      
       {/* Header */}
-      <header className="bg-green-600 text-white flex items-center justify-between p-4 shadow-md">
-        <h1 className="text-2xl font-bold flex items-center">
-          🌾 RMT Equipment Manager
-        </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition text-sm"
-        >
-          Logout
-        </button>
+      <header className="bg-green-700 text-white p-4 text-center text-3xl font-bold shadow-md flex justify-center items-center gap-2">
+        <img src="/icon-192x192.png" alt="RMT Logo" className="w-10 h-10 animate-bounce" />
+        RMT Equipment Manager
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto p-6 flex-grow space-y-8">
+      <main className="flex-grow container mx-auto p-6 space-y-10">
+
+        {/* Logout Button */}
+        <div className="flex justify-end">
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* Add Equipment */}
-        <section className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-2xl font-semibold mb-4 text-green-700">Add New Equipment</h2>
+        <section className="bg-white p-8 rounded-2xl shadow-lg">
+          <h2 className="text-2xl font-bold mb-6">Add New Equipment</h2>
           <AddEquipmentForm onAdd={loadEquipment} />
         </section>
 
-        {/* Equipment List */}
-        <section className="bg-white p-6 rounded-xl shadow-md">
+        {/* Dashboard */}
+        <section className="bg-white p-8 rounded-2xl shadow-lg">
           <EquipmentList equipment={equipment} onDelete={loadEquipment} />
         </section>
 
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-300 p-4 text-center text-sm">
-        © 2025 RMT Equipment Manager. All rights reserved.
+      <footer className="bg-green-800 text-white p-4 text-center text-sm">
+        © 2025 RMT Equipment. All rights reserved.
       </footer>
 
     </div>
