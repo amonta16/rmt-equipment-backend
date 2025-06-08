@@ -69,7 +69,7 @@ function App() {
 
       {/* Footer */}
       <footer className="bg-green-800 text-white p-4 text-center text-sm">
-        © 2025 RMT Equipment. All rights reserved.
+        © 2025 RMT Equipment. All rights reserved!.
       </footer>
 
     </div>
