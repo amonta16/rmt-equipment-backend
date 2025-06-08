@@ -44,7 +44,7 @@ function AddEquipmentForm({ onAdd }) {
         placeholder="Name"
         value={formData.name}
         onChange={handleChange}
-        className="p-3 border-2 border-blue-500 bg-yellow-200 rounded-xl"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
         required
       />
       <input
@@ -53,14 +53,14 @@ function AddEquipmentForm({ onAdd }) {
         placeholder="Type"
         value={formData.type}
         onChange={handleChange}
-        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
         required
       />
       <select
         name="status"
         value={formData.status}
         onChange={handleChange}
-        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
       >
         <option value="Available">Available</option>
         <option value="Rented">Rented</option>
@@ -70,21 +70,21 @@ function AddEquipmentForm({ onAdd }) {
         name="available_date"
         value={formData.available_date}
         onChange={handleChange}
-        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
       />
       <input
         type="date"
         name="return_date"
         value={formData.return_date}
         onChange={handleChange}
-        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
       />
       <textarea
         name="notes"
         placeholder="Notes"
         value={formData.notes}
         onChange={handleChange}
-        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 md:col-span-2 lg:col-span-3"
+        className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 md:col-span-2 lg:col-span-3 text-black"
       />
       <button
         type="submit"

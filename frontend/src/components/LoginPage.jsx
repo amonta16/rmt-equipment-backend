@@ -24,7 +24,7 @@ function LoginPage({ onLogin }) {
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
             required
           />
           <button

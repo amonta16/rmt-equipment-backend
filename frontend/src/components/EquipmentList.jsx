@@ -7,7 +7,7 @@ function EquipmentList({ equipment }) {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-8 flex items-center space-x-2">
+      <h2 className="text-3xl font-bold mb-8 flex items-center space-x-2 text-black">
         <span>Equipment Dashboard</span>
         <span className="text-green-600 animate-bounce text-4xl">🚜</span>
       </h2>
