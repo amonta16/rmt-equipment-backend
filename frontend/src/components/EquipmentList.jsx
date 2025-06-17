@@ -39,7 +39,7 @@ function EquipmentList({ equipment }) {
               className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
               style={{ animation: `fadeIn 0.5s ease ${index * 0.05}s forwards`, opacity: 0 }}
             >
-              <h3 className="text-xl font-bold mb-2">{item.name}</h3>
+              <h3 className="text-gray-600 font-bold mb-2">{item.name}</h3>
               <p className="text-gray-600 mb-1">Type: {item.type}</p>
               <p className="text-gray-600 mb-1">Status: {item.status}</p>
               {item.notes && <p className="text-gray-500 mt-2 text-sm">{item.notes}</p>}
