@@ -22,21 +22,23 @@ export default function AppTabs({ equipment, onReload }) {
   return (
     <div>
       {/* Tab Navigation */}
-      <div className="flex gap-4 mb-6 border-b border-gray-300">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            className={`py-2 px-4 font-semibold rounded-t-md transition ${
-              activeTab === tab.key
-                ? 'bg-green-600 text-white'
-                : 'bg-green-300 text-black hover:bg-green-600 hover:text-white'
-            }`}
-            style={{ backgroundColor: activeTab === tab.key ? '#30d56c' : '#16a34a', color: activeTab === tab.key ? 'white' : 'black' }}
-            onClick={() => setActiveTab(tab.key)}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="overflow-x-auto no-scrollbar">
+        <div className="flex gap-4 mb-6 border-b border-gray-300">
+            {tabs.map((tab) => (
+            <button
+                key={tab.key}
+                className={`py-2 px-4 font-semibold rounded-t-md transition whitespace-nowrap ${
+                activeTab === tab.key
+                    ? 'bg-green-600 text-white'
+                    : 'bg-green-300 text-black hover:bg-green-600 hover:text-white'
+                }`}
+                style={{ backgroundColor: activeTab === tab.key ? '#30d56c' : '#16a34a', color: activeTab === tab.key ? 'white' : 'black' }}
+                onClick={() => setActiveTab(tab.key)}
+            >
+                {tab.label}
+            </button>
+            ))}
+        </div>
       </div>
 
       {/* Tab Content */}
