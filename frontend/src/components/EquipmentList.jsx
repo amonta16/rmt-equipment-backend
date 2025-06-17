@@ -52,25 +52,28 @@ function EquipmentList({ equipment }) {
       </div>
 
       {selectedItem && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-      bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
-          <div className="bg-white border border-black p-6 rounded-xl max-w-md w-full relative shadow-lg">
-            <button
-              className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
-              onClick={() => setSelectedItem(null)}
-            >
-              &times;
-            </button>
-            <h3 className="text-2xl font-bold mb-2 text-black">{selectedItem.name}</h3>
-            <p className="text-black mb-1"><strong>Type:</strong> {selectedItem.type}</p>
-            <p className="text-black mb-1"><strong>Status:</strong> {selectedItem.status}</p>
-            <p className="text-black mb-1"><strong>Available:</strong> {selectedItem.available_date}</p>
-            <p className="text-red-500 mb-1"><strong>Return:</strong> {selectedItem.return_date}</p>
-            {selectedItem.notes && (
-              <p className="text-black mt-2"><strong>Notes:</strong> {selectedItem.notes}</p>
-            )}
+        <>
+          <div className="fixed inset-0 bg-black/35 z-40"></div>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+        bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
+            <div className="bg-white border border-black p-6 rounded-xl max-w-md w-full relative shadow-lg">
+              <button
+                className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+                onClick={() => setSelectedItem(null)}
+              >
+                &times;
+              </button>
+              <h3 className="text-2xl font-bold mb-2 text-black">{selectedItem.name}</h3>
+              <p className="text-black mb-1"><strong>Type:</strong> {selectedItem.type}</p>
+              <p className="text-black mb-1"><strong>Status:</strong> {selectedItem.status}</p>
+              <p className="text-black mb-1"><strong>Available:</strong> {selectedItem.available_date}</p>
+              <p className="text-red-500 mb-1"><strong>Return:</strong> {selectedItem.return_date}</p>
+              {selectedItem.notes && (
+                <p className="text-black mt-2"><strong>Notes:</strong> {selectedItem.notes}</p>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Fade-in animation keyframes */}

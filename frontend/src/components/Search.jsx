@@ -83,22 +83,25 @@ export default function SearchEquipment({ equipment }) {
       </ul>
 
         {selectedItem && (
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
-                <button
-                    className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
-                    onClick={() => setSelectedItem(null)}
-                >
-                    &times;
-                </button>
-                <h3 className="text-lg text-black font-semibold mb-2">Equipment Details</h3>
-                <p className ="text-black"><strong>Name:</strong> {selectedItem.name}</p>
-                <p className ="text-black"><strong>Type:</strong> {selectedItem.type}</p>
-                <p className ="text-black"><strong>Status:</strong> {selectedItem.status}</p>
-                <p className ="text-black"><strong>Available Date:</strong> {selectedItem.available_date}</p>
-                <p className ="text-black"><strong>Return Date:</strong> {selectedItem.return_date}</p>
-                <p className ="text-black"><strong>Notes:</strong> {selectedItem.notes}</p>
-            </div>
+            <>
+                <div className="fixed inset-0 bg-black/35 z-40"></div>
+                <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                    bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
+                    <button
+                        className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+                        onClick={() => setSelectedItem(null)}
+                    >
+                        &times;
+                    </button>
+                    <h3 className="text-lg text-black font-semibold mb-2">Equipment Details</h3>
+                    <p className ="text-black"><strong>Name:</strong> {selectedItem.name}</p>
+                    <p className ="text-black"><strong>Type:</strong> {selectedItem.type}</p>
+                    <p className ="text-black"><strong>Status:</strong> {selectedItem.status}</p>
+                    <p className ="text-black"><strong>Available Date:</strong> {selectedItem.available_date}</p>
+                    <p className ="text-black"><strong>Return Date:</strong> {selectedItem.return_date}</p>
+                    <p className ="text-black"><strong>Notes:</strong> {selectedItem.notes}</p>
+                </div>
+            </>
         )}
     </section>
   );
