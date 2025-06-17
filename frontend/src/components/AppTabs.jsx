@@ -22,7 +22,7 @@ export default function AppTabs({ equipment, onReload }) {
   return (
     <div>
       {/* Tab Navigation */}
-      <div className="overflow-x-auto no-scrollbar">
+      <div className="overflow-x-auto no-scrollbar p-1">
         <div className="flex gap-4 mb-6 border-b border-gray-300">
             {tabs.map((tab) => (
             <button
