@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import EquipmentList from './EquipmentList';
 import AddEquipmentForm from './AddEquipmentForm';
 import DeleteEquipmentForm from './DeleteEquipmentForm';
+import Search from './Search';
+import Rentals from './Rentals';
 
 export default function AppTabs({ equipment, onReload }) {
   const [activeTab, setActiveTab] = useState('Dashboard');
@@ -14,6 +16,8 @@ export default function AppTabs({ equipment, onReload }) {
     { label: 'Renters', key: 'Renters' },
     { label: 'Scan QR', key: 'Scan' },
   ];
+  
+  const rentals = equipment.filter((item) => item.status !== 'Available');
 
   return (
     <div>
@@ -48,6 +52,11 @@ export default function AppTabs({ equipment, onReload }) {
           <DeleteEquipmentForm onDelete={onReload} />
         </section>
       )}
+
+      {activeTab === 'Search' && <Search equipment={equipment} />}
+
+      {activeTab === 'Rentals' && <Rentals rentals={rentals} />}
+
     </div>
   );
 }
