@@ -58,7 +58,8 @@ export default function Rentals({ rentals }) {
         </table>
       </div>
         {selectedRental && (
-            <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white border border-black p-4 rounded-xl shadow-xl z-30 w-[90%] max-w-md">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+      bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
                 <button
                     className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
                     onClick={() => setSelectedRental(null)}
