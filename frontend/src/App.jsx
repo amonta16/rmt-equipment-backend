@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EquipmentList from './components/EquipmentList';
 import AddEquipmentForm from './components/AddEquipmentForm';
+import DeleteEquipmentForm from './components/DeleteEquipmentForm';
 import LoginPage from './components/LoginPage';
 import { fetchEquipment } from './api/equipment';
 
@@ -59,6 +60,10 @@ function App() {
           <h2 className="text-2xl font-bold mb-6 text-black">Add New Equipment</h2>
           <AddEquipmentForm onAdd={loadEquipment} />
         </section>
+
+        <div className="mt-10">
+          <DeleteEquipmentForm onDelete={loadEquipment} />
+        </div>
 
         {/* Dashboard */}
         <section className="bg-white p-8 rounded-2xl shadow-lg">

@@ -19,5 +19,14 @@ export const addEquipment = async (equipment) => {
   if (error) throw error;
   return data;
 };
-export const deleteEquipment = (id) => API.delete(`/equipment/${id}`);
+//export const deleteEquipment = (id) => API.delete(`/equipment/${id}`);
+export const deleteEquipment = async (id) => {
+  const { data, error } = await supabase
+    .from('equipment')
+    .delete()
+    .eq('id', id);
+  
+  if (error) throw error;
+  return data;
+};
 
