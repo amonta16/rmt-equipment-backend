@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function EquipmentList({ equipment }) {
   const totalEquipment = equipment.length;
   const availableEquipment = equipment.filter(item => item.status.toLowerCase() === 'available').length;
   const rentedEquipment = equipment.filter(item => item.status.toLowerCase() === 'rented').length;
 
+  const [selectedItem, setSelectedItem] = useState(null);
+
   return (
-    <div className="p-6">
+    <div className="relative p-6">
       <h2 className="text-3xl font-bold mb-8 flex items-center space-x-2 text-black">
         <span>Equipment Dashboard</span>
         <span className="text-green-600 animate-bounce text-4xl">🚜</span>
@@ -36,6 +38,7 @@ function EquipmentList({ equipment }) {
           equipment.map((item, index) => (
             <div
               key={item.id}
+              onClick={() => setSelectedItem(item)}
               className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
               style={{ animation: `fadeIn 0.5s ease ${index * 0.05}s forwards`, opacity: 0 }}
             >
@@ -47,6 +50,27 @@ function EquipmentList({ equipment }) {
           ))
         )}
       </div>
+
+      {selectedItem && (
+        <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white border border-black p-4 rounded-xl shadow-xl z-30 w-[90%] max-w-md">
+          <div className="bg-white border border-black p-6 rounded-xl max-w-md w-full relative shadow-lg">
+            <button
+              className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+              onClick={() => setSelectedItem(null)}
+            >
+              &times;
+            </button>
+            <h3 className="text-2xl font-bold mb-2 text-black">{selectedItem.name}</h3>
+            <p className="text-black mb-1"><strong>Type:</strong> {selectedItem.type}</p>
+            <p className="text-black mb-1"><strong>Status:</strong> {selectedItem.status}</p>
+            <p className="text-black mb-1"><strong>Available:</strong> {selectedItem.available_date}</p>
+            <p className="text-red-500 mb-1"><strong>Return:</strong> {selectedItem.return_date}</p>
+            {selectedItem.notes && (
+              <p className="text-black mt-2"><strong>Notes:</strong> {selectedItem.notes}</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Fade-in animation keyframes */}
       <style>{`

@@ -59,19 +59,20 @@ export default function Rentals({ rentals }) {
       </div>
         {selectedRental && (
             <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white border border-black p-4 rounded-xl shadow-xl z-30 w-[90%] max-w-md">
-            <h3 className="text-lg text-black font-bold mb-2">Rental Details</h3>
-            <p className ="text-black"><strong>Name:</strong> {selectedRental.name}</p>
-            <p className ="text-black"><strong>Renter:</strong> {selectedRental.renter}</p>
-            <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
-            <p className ="text-black"><strong>Available Date:</strong> {selectedRental.available_date}</p>
-            <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>
-            <p className ="text-black"><strong>Notes:</strong> {selectedRental.notes}</p>
-            <button
-                className="mt-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                onClick={() => setSelectedRental(null)}
-            >
-                Close
-            </button>
+                <button
+                    className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+                    onClick={() => setSelectedRental(null)}
+                >
+                    &times;
+                </button>
+                <h3 className="text-lg text-black font-bold mb-2">Rental Details</h3>
+                <p className ="text-black"><strong>Name:</strong> {selectedRental.name}</p>
+                <p className ="text-black"><strong>Renter:</strong> {selectedRental.renter}</p>
+                <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
+                <p className ="text-black"><strong>Available Date:</strong> {selectedRental.available_date}</p>
+                <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>
+                <p className ="text-black"><strong>Notes:</strong> {selectedRental.notes}</p>
+                
             </div>
         )}
     </section>

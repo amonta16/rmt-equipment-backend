@@ -84,22 +84,19 @@ export default function SearchEquipment({ equipment }) {
 
         {selectedItem && (
             <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white border border-black p-4 rounded-xl shadow-xl z-30 w-[90%] max-w-md">
-                <div className="mt-6 p-4 border border-black rounded bg-gray-50">
-                    <h3 className="text-lg text-black font-semibold mb-2">Equipment Details</h3>
-                    <p className ="text-black"><strong>Name:</strong> {selectedItem.name}</p>
-                    <p className ="text-black"><strong>Type:</strong> {selectedItem.type}</p>
-                    <p className ="text-black"><strong>Status:</strong> {selectedItem.status}</p>
-                    <p className ="text-black"><strong>Available Date:</strong> {selectedItem.available_date}</p>
-                    <p className ="text-black"><strong>Return Date:</strong> {selectedItem.return_date}</p>
-                    <p className ="text-black"><strong>Notes:</strong> {selectedItem.notes}</p>
-
-                    <button
-                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
-                        onClick={() => setSelectedItem(null)}
-                    >
-                        Close
-                    </button>
-                </div>
+                <button
+                    className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+                    onClick={() => setSelectedItem(null)}
+                >
+                    &times;
+                </button>
+                <h3 className="text-lg text-black font-semibold mb-2">Equipment Details</h3>
+                <p className ="text-black"><strong>Name:</strong> {selectedItem.name}</p>
+                <p className ="text-black"><strong>Type:</strong> {selectedItem.type}</p>
+                <p className ="text-black"><strong>Status:</strong> {selectedItem.status}</p>
+                <p className ="text-black"><strong>Available Date:</strong> {selectedItem.available_date}</p>
+                <p className ="text-black"><strong>Return Date:</strong> {selectedItem.return_date}</p>
+                <p className ="text-black"><strong>Notes:</strong> {selectedItem.notes}</p>
             </div>
         )}
     </section>
