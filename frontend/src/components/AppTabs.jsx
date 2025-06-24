@@ -4,6 +4,7 @@ import AddEquipmentForm from './AddEquipmentForm';
 import DeleteEquipmentForm from './DeleteEquipmentForm';
 import Search from './Search';
 import Rentals from './Rentals';
+import ScanQR from './ScanQR';
 
 export default function AppTabs({ equipment, onReload }) {
   const [activeTab, setActiveTab] = useState('Dashboard');
@@ -58,6 +59,17 @@ export default function AppTabs({ equipment, onReload }) {
       {activeTab === 'Search' && <Search equipment={equipment} />}
 
       {activeTab === 'Rentals' && <Rentals rentals={rentals} />}
+
+      {activeTab === 'Scan' && (
+        <ScanQR
+          onScanResult={(text) => {
+            // Extract equipment ID from QR
+            // For example: https://yourapp.com/equipment/123
+            const id = extractIdFromQR(text); // define this yourself
+            navigateToEquipment(id); // or set state to show equipment info
+          }}
+        />
+      )}
 
     </div>
   );
