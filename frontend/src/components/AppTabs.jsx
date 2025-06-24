@@ -62,11 +62,11 @@ export default function AppTabs({ equipment, onReload }) {
 
       {activeTab === 'Scan' && (
         <ScanQR
-          onScanResult={(text) => {
-            // Extract equipment ID from QR
-            // For example: https://yourapp.com/equipment/123
-            const id = extractIdFromQR(text); // define this yourself
-            navigateToEquipment(id); // or set state to show equipment info
+          onResult={(data) => {
+            console.log('Scanned QR code:', data);
+            // Extract ID and navigate or fetch info
+            const id = extractId(data); // make your own parsing function
+            loadEquipmentById(id);
           }}
         />
       )}
