@@ -21,7 +21,16 @@ function ScanTab() {
       .start(
         { facingMode: 'environment' },
         { fps: 10, qrbox: 250 },
-        async (decodedText) => {
+        (decodedText) => {
+            console.log('SCANNED:', decodedText);
+            alert(`Scanned: ${decodedText}`);
+        },
+            (error) => {
+                console.log('Scan error:', error);
+            }
+        );
+      }, []);
+        /*async (decodedText) => {
 
           console.log('RAW decodedText:', decodedText);
 
@@ -83,7 +92,7 @@ function ScanTab() {
           });
       }
     };
-  }, []);
+  }, []);*/
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center bg-black p-4">
