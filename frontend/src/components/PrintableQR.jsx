@@ -37,7 +37,7 @@ export default function PrintableQR({ id, name }) {
   return (
     <div className="text-center">
       <div ref={canvasRef} className="hidden">
-        <QRCodeCanvas value={id} size={128} />
+        <QRCodeCanvas value={item.id.toString()} size={128} />
       </div>
       <button
         onClick={handlePrint}
