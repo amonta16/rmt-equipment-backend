@@ -25,7 +25,7 @@ function ScanTab() {
           if (!scannerStartedRef.current) return;
 
           scannerStartedRef.current = false;
-
+          console.log('Decoded QR:', decodedText);
           let id;
           try {
             // Try converting scanned text to BigInt
