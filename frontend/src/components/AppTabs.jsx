@@ -5,6 +5,7 @@ import DeleteEquipmentForm from './DeleteEquipmentForm';
 import Search from './Search';
 import Rentals from './Rentals';
 import ScanQR from './ScanQR';
+import PrintQRCodes from './PrintQRCodes';
 
 export default function AppTabs({ equipment, onReload }) {
   const [activeTab, setActiveTab] = useState('Dashboard');
@@ -16,6 +17,7 @@ export default function AppTabs({ equipment, onReload }) {
     { label: 'Rentals', key: 'Rentals' },
     { label: 'Renters', key: 'Renters' },
     { label: 'Scan QR', key: 'Scan' },
+    { label: 'Print QR Codes', key: 'Print' },
   ];
   
   const rentals = equipment.filter((item) => item.status !== 'Available');
@@ -62,13 +64,30 @@ export default function AppTabs({ equipment, onReload }) {
 
       {activeTab === 'Scan' && (
         <ScanQR
-          onResult={(data) => {
-            console.log('Scanned QR code:', data);
-            // Extract ID and navigate or fetch info
-            const id = extractId(data); // make your own parsing function
-            loadEquipmentById(id);
+          onResult={async (scannedId) => {
+            const { data, error } = await supabase
+              .from('equipment')
+              .select('*')
+              .eq('id', scannedId)
+              .single();
+
+            if (error || !data) {
+              console.error('Equipment not found:', error);
+              // Show message to user
+              return;
+            }
+
+            // You now have the equipment data, show it
+            console.log('Scanned equipment:', data);
+            // Optionally navigate or update state
           }}
         />
+      )}
+
+      {activeTab === 'Print' && (
+        <section className="bg-white p-6 rounded-2x1 shadow-lg">
+          <PrintQRCodes equipmentList={equipment} />
+        </section>
       )}
 
     </div>

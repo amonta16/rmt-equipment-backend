@@ -8,7 +8,10 @@ import AppTabs from './components/AppTabs';
 
 function App() {
   const [equipment, setEquipment] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem('loggedIn') === 'true';
+  });
+
 
   const loadEquipment = () => {
     fetchEquipment()
@@ -23,10 +26,12 @@ function App() {
   }, [loggedIn]);
 
   const handleLogin = () => {
+    localStorage.setItem('loggedIn', 'true');
     setLoggedIn(true);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('loggedIn');
     setLoggedIn(false);
   };
 
