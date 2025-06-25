@@ -11,7 +11,7 @@ function ScanTab() {
   const scannerRef = useRef(null);
   const scannerStartedRef = useRef(false);
   const [scannedItem, setScannedItem] = useState(null);
-  const [debugLog, setDebugLog] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     const scanner = new Html5Qrcode('reader');
@@ -25,38 +25,50 @@ function ScanTab() {
           if (!scannerStartedRef.current) return;
 
           scannerStartedRef.current = false;
-          setDebugLog((log) => `Scanned: ${decodedText}\n\n` + log);
+
+          let id;
+          try {
+            // Try converting scanned text to BigInt
+            id = BigInt(decodedText);
+          } catch (e) {
+            console.error('Scanned QR code is not a valid bigint:', decodedText);
+            setErrorMsg('Invalid QR code scanned, not a valid equipment ID.');
+            // Restart scanner for retry
+            scannerStartedRef.current = true;
+            return;
+          }
+
+          setErrorMsg(''); // clear error if any
 
           const { data, error } = await supabase
             .from('equipment')
             .select('*')
-            .eq('id', decodedText)
+            .eq('id', id.toString()) // send string representation of bigint
             .single();
 
           if (error || !data) {
-            setDebugLog((log) =>
-              `Error fetching equipment:\n${JSON.stringify(error, null, 2)}\n\n` + log
-            );
+            console.error('Error fetching equipment:', error);
+            setErrorMsg('Equipment not found.');
+            // Restart scanner for retry
+            scannerStartedRef.current = true;
             return;
           }
 
-          setDebugLog((log) =>
-            `Success:\n${JSON.stringify(data, null, 2)}\n\n` + log
-          );
-
           setScannedItem(data);
+          // Stop scanner now that we have a result
           scanner.stop().then(() => scanner.clear());
         },
-        (error) => {
-          setDebugLog((log) => `Scan error: ${error}\n\n` + log);
+        (scanError) => {
+          // Optionally log scan errors (like decode failures)
+          // console.warn('Scan error:', scanError);
         }
       )
       .then(() => {
         scannerStartedRef.current = true;
-        setDebugLog((log) => 'Scanner started.\n\n' + log);
       })
-      .catch((err) => {
-        setDebugLog((log) => `Failed to start scanner:\n${err.message}\n\n` + log);
+      .catch((startErr) => {
+        console.error('QR scanner failed to start:', startErr);
+        setErrorMsg('Failed to start camera for scanning.');
       });
 
     return () => {
@@ -64,92 +76,95 @@ function ScanTab() {
         scannerRef.current
           .stop()
           .then(() => scannerRef.current.clear())
-          .catch((err) => {
-            setDebugLog((log) => `Cleanup warning:\n${err.message}\n\n` + log);
+          .catch((stopErr) => {
+            console.warn('Scanner already stopped:', stopErr.message);
           });
       }
     };
   }, []);
 
   return (
-    <div className="relative h-screen flex items-center justify-center bg-black">
-      {/* QR Scanner Camera Feed */}
-      <div id="reader" className="w-full max-w-md mx-auto" />
+    <div className="relative h-screen flex flex-col items-center justify-center bg-black p-4">
+      <div id="reader" className="w-full max-w-md mx-auto rounded-md overflow-hidden" />
 
       {/* Scan Box Overlay */}
       <div className="absolute border-4 border-white rounded-xl w-60 h-60 pointer-events-none" />
 
-      {/* Scanned Item Overlay */}
+      {/* Error message */}
+      {errorMsg && (
+        <div className="absolute top-5 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-2 rounded z-50">
+          {errorMsg}
+        </div>
+      )}
+
+      {/* Scanned Item Modal */}
       {scannedItem && (
         <>
           <div className="fixed inset-0 bg-black/40 z-40"></div>
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-          bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md">
+          <div
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+          bg-white border border-black p-6 rounded-xl shadow-xl z-50 w-11/12 max-w-md"
+          >
             <button
-              className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
+              className="absolute top-2 right-2 w-6 h-6 p-0 text-lg bg-black text-white rounded-full flex items-center justify-center leading-none"
               onClick={() => {
                 setScannedItem(null);
+                setErrorMsg('');
+                // Restart scanner when modal closes
                 scannerRef.current
-                  .start(
-                    { facingMode: 'environment' },
-                    { fps: 10, qrbox: 250 },
-                    async (decodedText) => {
-                        if (!scannerStartedRef.current) return;
-
-                        const trimmedText = decodedText.trim();
-
-                        // Try parsing as a number
-                        const id = parseInt(trimmedText, 10);
-                        if (isNaN(id)) {
-                            console.warn('Scanned value is not a valid number ID:', trimmedText);
-                            return; // Ignore invalid scans
-                        }
-
-                        scannerStartedRef.current = false;
-
-                        // Fetch from Supabase with numeric id
-                        const { data, error } = await supabase
-                            .from('equipment')
-                            .select('*')
-                            .eq('id', id)
-                            .single();
-
-                        if (error || !data) {
-                            console.error('Equipment not found:', error);
-                            return;
-                        }
-
-                        setScannedItem(data);
-                        scanner.stop().then(() => scanner.clear());
-                        },
-                  )
+                  .start({ facingMode: 'environment' }, { fps: 10, qrbox: 250 }, async (decodedText) => {
+                    let id;
+                    try {
+                      id = BigInt(decodedText);
+                    } catch {
+                      setErrorMsg('Invalid QR code scanned, not a valid equipment ID.');
+                      return;
+                    }
+                    const { data, error } = await supabase
+                      .from('equipment')
+                      .select('*')
+                      .eq('id', id.toString())
+                      .single();
+                    if (data) {
+                      setScannedItem(data);
+                      scannerRef.current.stop().then(() => scannerRef.current.clear());
+                    } else {
+                      setErrorMsg('Equipment not found.');
+                    }
+                  })
                   .then(() => {
                     scannerStartedRef.current = true;
-                    setDebugLog((log) => 'Scanner restarted.\n\n' + log);
                   })
                   .catch((err) => {
-                    setDebugLog((log) => `Restart failed:\n${err.message}\n\n` + log);
+                    console.error('Failed to restart scanner:', err);
+                    setErrorMsg('Failed to restart scanner.');
                   });
               }}
+              aria-label="Close scanned item details"
             >
               &times;
             </button>
             <h3 className="text-2xl font-bold mb-2 text-black">{scannedItem.name}</h3>
-            <p className="text-black mb-1"><strong>Type:</strong> {scannedItem.type}</p>
-            <p className="text-black mb-1"><strong>Status:</strong> {scannedItem.status}</p>
-            <p className="text-black mb-1"><strong>Available:</strong> {scannedItem.available_date}</p>
-            <p className="text-red-500 mb-1"><strong>Return:</strong> {scannedItem.return_date}</p>
+            <p className="text-black mb-1">
+              <strong>Type:</strong> {scannedItem.type}
+            </p>
+            <p className="text-black mb-1">
+              <strong>Status:</strong> {scannedItem.status}
+            </p>
+            <p className="text-black mb-1">
+              <strong>Available:</strong> {scannedItem.available_date}
+            </p>
+            <p className="text-red-500 mb-1">
+              <strong>Return:</strong> {scannedItem.return_date}
+            </p>
             {scannedItem.notes && (
-              <p className="text-black mt-2"><strong>Notes:</strong> {scannedItem.notes}</p>
+              <p className="text-black mt-2">
+                <strong>Notes:</strong> {scannedItem.notes}
+              </p>
             )}
           </div>
         </>
       )}
-
-      {/* On-screen Debug Log Viewer */}
-      <pre className="fixed bottom-0 left-0 w-full max-h-40 overflow-y-auto bg-black text-green-400 text-xs p-2 z-[9999]">
-        {debugLog}
-      </pre>
     </div>
   );
 }
