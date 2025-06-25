@@ -11,6 +11,7 @@ function ScanTab() {
   const scannerRef = useRef(null);
   const scannerStartedRef = useRef(false);
   const [scannedItem, setScannedItem] = useState(null);
+  const [debugLog, setDebugLog] = useState('');
 
   useEffect(() => {
     const scanner = new Html5Qrcode('reader');
@@ -24,8 +25,8 @@ function ScanTab() {
           if (!scannerStartedRef.current) return;
 
           scannerStartedRef.current = false;
+          setDebugLog((log) => `Scanned: ${decodedText}\n\n` + log);
 
-          // Fetch from Supabase
           const { data, error } = await supabase
             .from('equipment')
             .select('*')
@@ -33,22 +34,29 @@ function ScanTab() {
             .single();
 
           if (error || !data) {
-            console.error('Equipment not found:', error);
+            setDebugLog((log) =>
+              `Error fetching equipment:\n${JSON.stringify(error, null, 2)}\n\n` + log
+            );
             return;
           }
+
+          setDebugLog((log) =>
+            `Success:\n${JSON.stringify(data, null, 2)}\n\n` + log
+          );
 
           setScannedItem(data);
           scanner.stop().then(() => scanner.clear());
         },
         (error) => {
-          // console.log('Scan error', error);
+          setDebugLog((log) => `Scan error: ${error}\n\n` + log);
         }
       )
       .then(() => {
         scannerStartedRef.current = true;
+        setDebugLog((log) => 'Scanner started.\n\n' + log);
       })
       .catch((err) => {
-        console.error('QR scanner failed to start:', err);
+        setDebugLog((log) => `Failed to start scanner:\n${err.message}\n\n` + log);
       });
 
     return () => {
@@ -57,7 +65,7 @@ function ScanTab() {
           .stop()
           .then(() => scannerRef.current.clear())
           .catch((err) => {
-            console.warn('Scanner already stopped:', err.message);
+            setDebugLog((log) => `Cleanup warning:\n${err.message}\n\n` + log);
           });
       }
     };
@@ -81,24 +89,35 @@ function ScanTab() {
               className="absolute top-2 right-2 w-4 h-4 p-0 text-[10px] overflow-hidden bg-black text-white rounded-full flex items-center justify-center leading-none"
               onClick={() => {
                 setScannedItem(null);
-                // Restart scanner after closing modal
                 scannerRef.current
-                  .start({ facingMode: 'environment' }, { fps: 10, qrbox: 250 }, async (decodedText) => {
-                    const { data, error } = await supabase
-                      .from('equipment')
-                      .select('*')
-                      .eq('id', decodedText)
-                      .single();
-                    if (data) {
-                      setScannedItem(data);
-                      scannerRef.current.stop().then(() => scannerRef.current.clear());
+                  .start(
+                    { facingMode: 'environment' },
+                    { fps: 10, qrbox: 250 },
+                    async (decodedText) => {
+                      const { data, error } = await supabase
+                        .from('equipment')
+                        .select('*')
+                        .eq('id', decodedText)
+                        .single();
+                      if (data) {
+                        setScannedItem(data);
+                        setDebugLog((log) =>
+                          `Success:\n${JSON.stringify(data, null, 2)}\n\n` + log
+                        );
+                        scannerRef.current.stop().then(() => scannerRef.current.clear());
+                      } else {
+                        setDebugLog((log) =>
+                          `Rescan error:\n${JSON.stringify(error, null, 2)}\n\n` + log
+                        );
+                      }
                     }
-                  })
+                  )
                   .then(() => {
                     scannerStartedRef.current = true;
+                    setDebugLog((log) => 'Scanner restarted.\n\n' + log);
                   })
                   .catch((err) => {
-                    console.error('Failed to restart scanner:', err);
+                    setDebugLog((log) => `Restart failed:\n${err.message}\n\n` + log);
                   });
               }}
             >
@@ -115,6 +134,11 @@ function ScanTab() {
           </div>
         </>
       )}
+
+      {/* On-screen Debug Log Viewer */}
+      <pre className="fixed bottom-0 left-0 w-full max-h-40 overflow-y-auto bg-black text-green-400 text-xs p-2 z-[9999]">
+        {debugLog}
+      </pre>
     </div>
   );
 }
