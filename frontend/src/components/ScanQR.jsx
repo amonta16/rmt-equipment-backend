@@ -48,7 +48,7 @@ function ScanTab() {
 
           if (error || !data) {
             console.error('Error fetching equipment:', error);
-            setErrorMsg('Equipment not found. Decoded QR: ${decodedText}');
+            setErrorMsg(`Equipment not found. Decoded QR: ${decodedText}`);
             // Restart scanner for retry
             scannerStartedRef.current = true;
             return;
