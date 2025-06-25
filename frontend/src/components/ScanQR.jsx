@@ -94,23 +94,34 @@ function ScanTab() {
                     { facingMode: 'environment' },
                     { fps: 10, qrbox: 250 },
                     async (decodedText) => {
-                      const { data, error } = await supabase
-                        .from('equipment')
-                        .select('*')
-                        .eq('id', decodedText)
-                        .single();
-                      if (data) {
+                        if (!scannerStartedRef.current) return;
+
+                        const trimmedText = decodedText.trim();
+
+                        // Try parsing as a number
+                        const id = parseInt(trimmedText, 10);
+                        if (isNaN(id)) {
+                            console.warn('Scanned value is not a valid number ID:', trimmedText);
+                            return; // Ignore invalid scans
+                        }
+
+                        scannerStartedRef.current = false;
+
+                        // Fetch from Supabase with numeric id
+                        const { data, error } = await supabase
+                            .from('equipment')
+                            .select('*')
+                            .eq('id', id)
+                            .single();
+
+                        if (error || !data) {
+                            console.error('Equipment not found:', error);
+                            return;
+                        }
+
                         setScannedItem(data);
-                        setDebugLog((log) =>
-                          `Success:\n${JSON.stringify(data, null, 2)}\n\n` + log
-                        );
-                        scannerRef.current.stop().then(() => scannerRef.current.clear());
-                      } else {
-                        setDebugLog((log) =>
-                          `Rescan error:\n${JSON.stringify(error, null, 2)}\n\n` + log
-                        );
-                      }
-                    }
+                        scanner.stop().then(() => scanner.clear());
+                        },
                   )
                   .then(() => {
                     scannerStartedRef.current = true;
