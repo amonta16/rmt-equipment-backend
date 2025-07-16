@@ -74,6 +74,7 @@ export default function Rentals({ rentals }) {
                     <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
                     <p className ="text-black"><strong>Available Date:</strong> {selectedRental.available_date}</p>
                     <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>
+                    <p className ="text-black"><strong>Equipment ID:</strong> {selectedRental.id}</p>
                     <p className ="text-black"><strong>Notes:</strong> {selectedRental.notes}</p>
                     
                 </div>

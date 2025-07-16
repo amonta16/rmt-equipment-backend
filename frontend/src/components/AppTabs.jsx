@@ -2,25 +2,30 @@ import React, { useState } from 'react';
 import EquipmentList from './EquipmentList';
 import AddEquipmentForm from './AddEquipmentForm';
 import DeleteEquipmentForm from './DeleteEquipmentForm';
+import AddRenterForm from './AddRenterForm';
+import DeleteRenterForm from './DeleteRenterForm';
 import Search from './Search';
 import Rentals from './Rentals';
+import Renters from './Renters';
 import ScanQR from './ScanQR';
 import PrintQRCodes from './PrintQRCodes';
 
-export default function AppTabs({ equipment, onReload }) {
+export default function AppTabs({ equipment, renters, onReload }) {
   const [activeTab, setActiveTab] = useState('Dashboard');
 
   const tabs = [
     { label: 'Dashboard', key: 'Dashboard' },
-    { label: 'Manage Equipment', key: 'Manage' },
+    { label: 'Rent', key: 'Rent' },
     { label: 'Search', key: 'Search' },
     { label: 'Rentals', key: 'Rentals' },
     { label: 'Renters', key: 'Renters' },
     { label: 'Scan QR', key: 'Scan' },
     { label: 'Print QR Codes', key: 'Print' },
+    { label: 'Manage', key: 'Manage' },
   ];
   
   const rentals = equipment.filter((item) => item.status !== 'Available');
+
 
   return (
     <div>
@@ -53,14 +58,22 @@ export default function AppTabs({ equipment, onReload }) {
 
       {activeTab === 'Manage' && (
         <section className="bg-white p-6 rounded-2xl shadow-lg">
-          <AddEquipmentForm onAdd={onReload} />
-          <DeleteEquipmentForm onDelete={onReload} />
+          <section>
+            <AddEquipmentForm onAdd={onReload} />
+            <DeleteEquipmentForm onDelete={onReload} />
+          </section>
+          <section className="py-16">
+            <AddRenterForm onAdd={onReload} />
+            <DeleteRenterForm onDelete={onReload} />
+          </section>
         </section>
       )}
 
       {activeTab === 'Search' && <Search equipment={equipment} />}
 
       {activeTab === 'Rentals' && <Rentals rentals={rentals} />}
+
+      {activeTab === 'Renters' && <Renters renters={renters} />}
 
       {activeTab === 'Scan' && (
         <ScanQR

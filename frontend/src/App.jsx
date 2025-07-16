@@ -4,10 +4,13 @@ import AddEquipmentForm from './components/AddEquipmentForm';
 import DeleteEquipmentForm from './components/DeleteEquipmentForm';
 import LoginPage from './components/LoginPage';
 import { fetchEquipment } from './api/equipment';
+import { fetchRenters } from './api/renters';
+
 import AppTabs from './components/AppTabs';
 
 function App() {
   const [equipment, setEquipment] = useState([]);
+  const [renters, setRenters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(() => {
     return localStorage.getItem('loggedIn') === 'true';
   });
@@ -18,10 +21,21 @@ function App() {
       .then((res) => setEquipment(res.data))
       .catch((err) => console.error(err));
   };
+  const loadRenters = () => {
+    fetchRenters()
+      .then((res) => setRenters(res.data))
+      .catch((err) => console.error(err));
+  };
+
+  const loadData = () => {
+    loadEquipment;
+    loadRenters;
+  }
 
   useEffect(() => {
     if (loggedIn) {
       loadEquipment();
+      loadRenters();
     }
   }, [loggedIn]);
 
@@ -61,7 +75,7 @@ function App() {
           </button>
         </div>
 
-        <AppTabs equipment={equipment} onReload={loadEquipment} />
+        <AppTabs equipment={equipment} renters={renters} onReload={loadData} />
 
       </main>
 

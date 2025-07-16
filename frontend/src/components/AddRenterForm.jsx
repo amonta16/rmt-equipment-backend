@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { addEquipment } from '../api/equipment';
+import { addRenter } from '../api/renters';
 
-function AddEquipmentForm({ onAdd }) {
+function AddRenterForm({ onAdd }) {
   const [formData, setFormData] = useState({
     name: '',
-    type: '',
-    status: 'Available',
-    available_date: '',
-    return_date: '',
+    equipment: [],
+    email: '',
+    phone: '',
     notes: '',
   });
 
@@ -18,18 +17,17 @@ function AddEquipmentForm({ onAdd }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addEquipment(formData);
+      await addRenter(formData);
       onAdd();
       setFormData({
         name: '',
-        type: '',
-        status: 'Available',
-        available_date: '',
-        return_date: '',
+        equipment: [],
+        email: '',
+        phone: '',
         notes: '',
       });
     } catch (error) {
-      console.error('Error adding equipment:', error);
+      console.error('Error adding renter:', error);
     }
   };
 
@@ -48,36 +46,21 @@ function AddEquipmentForm({ onAdd }) {
         required
       />
       <input
-        type="text"
-        name="type"
-        placeholder="Type"
-        value={formData.type}
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
         onChange={handleChange}
         className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
         required
       />
-      <select
-        name="status"
-        value={formData.status}
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        value={formData.phone}
         onChange={handleChange}
         className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
-      >
-        <option value="Available">Available</option>
-        <option value="Rented">Rented</option>
-      </select>
-      <input
-        type="date"
-        name="available_date"
-        value={formData.available_date}
-        onChange={handleChange}
-        className="p-3 bg-gray-300 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
-      />
-      <input
-        type="date"
-        name="return_date"
-        value={formData.return_date}
-        onChange={handleChange}
-        className="p-3 bg-gray-300 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
       />
       <textarea
         name="notes"
@@ -90,10 +73,10 @@ function AddEquipmentForm({ onAdd }) {
         type="submit"
         className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-all md:col-span-2 lg:col-span-3"
       >
-        Add Equipment
+        Add Renter
       </button>
     </form>
   );
 }
 
-export default AddEquipmentForm;
+export default AddRenterForm;
