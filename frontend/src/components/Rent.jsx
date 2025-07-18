@@ -10,8 +10,12 @@ export default function Rent({ renters, equipment, onUpdate }) {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const [returnDate, setReturnDate] = useState('');
-  const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
-  
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // months are 0-based
+  const day = String(now.getDate()).padStart(2, '0');
+  const today = `${year}-${month}-${day}`;
+
   // Filter equipment based on search and filters
   const filteredRenters = renters.filter((renter) => {
     // Filter by name (case insensitive)
@@ -112,7 +116,7 @@ export default function Rent({ renters, equipment, onUpdate }) {
                                     </label>
                                     <input
                                         type="date"
-                                        className="border border-gray-400 rounded-xl p-2 text-black w-full"
+                                        className="border border-gray-400 bg-gray-300 rounded-xl p-2 text-black w-full"
                                         value={returnDate}
                                         min={today}
                                         onChange={(e) => setReturnDate(e.target.value)}

@@ -81,7 +81,17 @@ export default function Rentals({ rentals, renters }) {
                     </button>
                     <h3 className="text-lg text-black font-bold mb-2">Rental Details</h3>
                     <p className ="text-black"><strong>Name:</strong> {selectedRental.name}</p>
-                    <p className ="text-black"><strong>Renter:</strong> {selectedRental.renter}</p>
+                    <p className ="text-black"><strong>Renter:</strong> {(() => 
+                        {
+                            const eqRenter = renters.find((renter) => renter.id === selectedRental.renter);
+                            return eqRenter ? (
+                            <span>
+                                {eqRenter.name} - {eqRenter.id}
+                            </span>
+                            ) : (
+                            <span>None</span>
+                            );
+                        })()}</p>
                     <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
                     <p className ="text-black"><strong>Rented Date:</strong> {selectedRental.rented_date}</p>
                     <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>

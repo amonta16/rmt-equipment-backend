@@ -35,7 +35,9 @@ export const updateEquipment = async (item) => {
     .from('equipment')
     .update({
       status: item.status,
-      renter: item.renter
+      renter: item.renter,
+      rented_date: item.rented_date,
+      return_date: item.return_date,
     })
     .eq('id', item.id)
 
