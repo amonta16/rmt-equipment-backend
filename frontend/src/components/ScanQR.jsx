@@ -7,7 +7,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_KEY
 );
 
-function ScanTab() {
+function ScanTab({ renters = [] }) {
   const scannerRef = useRef(null);
   const scannerStartedRef = useRef(false);
   const [scannedItem, setScannedItem] = useState(null);
@@ -151,10 +151,26 @@ function ScanTab() {
               <strong>Status:</strong> {scannedItem.status}
             </p>
             <p className="text-black mb-1">
-              <strong>Return:</strong> {scannedItem.rented_date}
+              <strong>Rented:</strong> {scannedItem.rented_date}
             </p>
             <p className="text-red-500 mb-1">
               <strong>Return:</strong> {scannedItem.return_date}
+            </p>
+            <p className="text-black mb-1">
+              <strong>Renter:</strong> {(() => 
+                {
+                    const eqRenter = renters.find((renter) => renter.id === scannedItem.renter);
+                    return eqRenter ? (
+                    <span>
+                        {eqRenter.name} - {eqRenter.id}
+                    </span>
+                    ) : (
+                    <span>None</span>
+                    );
+                })()}
+            </p>
+            <p className ="text-black mb-1">
+              <strong>Equipment ID:</strong> {scannedItem.id}
             </p>
             {scannedItem.notes && (
               <p className="text-black mt-2">

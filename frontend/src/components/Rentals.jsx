@@ -91,7 +91,8 @@ export default function Rentals({ rentals, renters }) {
                             ) : (
                             <span>None</span>
                             );
-                        })()}</p>
+                        })()}
+                    </p>
                     <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
                     <p className ="text-black"><strong>Rented Date:</strong> {selectedRental.rented_date}</p>
                     <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>

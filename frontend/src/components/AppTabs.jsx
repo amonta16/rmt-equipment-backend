@@ -82,6 +82,7 @@ export default function AppTabs({ equipment, renters, onReload }) {
 
       {activeTab === 'Scan' && (
         <ScanQR
+          renters={renters}
           onResult={async (scannedId) => {
             const { data, error } = await supabase
               .from('equipment')
