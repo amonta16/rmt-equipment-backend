@@ -28,11 +28,12 @@ function App() {
   };
 
   const loadData = () => {
-    loadEquipment;
-    loadRenters;
+    loadEquipment();
+    loadRenters();
   }
 
   useEffect(() => {
+    loadData();
     if (loggedIn) {
       loadEquipment();
       loadRenters();

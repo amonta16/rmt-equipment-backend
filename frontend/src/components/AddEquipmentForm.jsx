@@ -5,10 +5,8 @@ function AddEquipmentForm({ onAdd }) {
   const [formData, setFormData] = useState({
     name: '',
     type: '',
-    status: 'Available',
-    available_date: '',
-    return_date: '',
     notes: '',
+    id: ''
   });
 
   const handleChange = (e) => {
@@ -23,21 +21,22 @@ function AddEquipmentForm({ onAdd }) {
       setFormData({
         name: '',
         type: '',
-        status: 'Available',
-        available_date: '',
-        return_date: '',
         notes: '',
+        id: ''
       });
     } catch (error) {
       console.error('Error adding equipment:', error);
     }
   };
 
+  
   return (
+    
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10"
-    >
+      className="grid grid-cols-1 gap-4 bg-gray-100 p-6 rounded-2xl shadow-lg mb-5"
+    > 
+      
       <input
         type="text"
         name="name"
@@ -56,28 +55,14 @@ function AddEquipmentForm({ onAdd }) {
         className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
         required
       />
-      <select
-        name="status"
-        value={formData.status}
+      <input
+        type="number"
+        name="id"
+        placeholder="ID"
+        value={formData.id}
         onChange={handleChange}
         className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
-      >
-        <option value="Available">Available</option>
-        <option value="Rented">Rented</option>
-      </select>
-      <input
-        type="date"
-        name="available_date"
-        value={formData.available_date}
-        onChange={handleChange}
-        className="p-3 bg-gray-300 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
-      />
-      <input
-        type="date"
-        name="return_date"
-        value={formData.return_date}
-        onChange={handleChange}
-        className="p-3 bg-gray-300 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-200 text-black"
+        required
       />
       <textarea
         name="notes"
@@ -92,6 +77,7 @@ function AddEquipmentForm({ onAdd }) {
       >
         Add Equipment
       </button>
+      
     </form>
   );
 }

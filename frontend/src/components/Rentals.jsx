@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Rentals({ rentals }) {
+export default function Rentals({ rentals, renters }) {
   if (!rentals || rentals.length === 0) {
     return <p>No active rentals.</p>;
   }
@@ -35,10 +35,21 @@ export default function Rentals({ rentals }) {
                     >
                         <td className="text-black py-2 px-4 border border-gray-300">{item.name || 'Unknown'}</td>
                         <td className="text-black py-2 px-4 border border-gray-300 font-bold">{item.type || 'Unknown'}</td>
-                        <td className="text-black py-2 px-4 border border-gray-300">{'Unknown'}</td>
+                        <td className="text-black py-2 px-4 border border-gray-300">
+                            {(() => {
+                                const eqRenter = renters.find((renter) => renter.id === item.renter);
+                                return eqRenter ? (
+                                <span>
+                                    {eqRenter.name} - {eqRenter.id}
+                                </span>
+                                ) : (
+                                <span>None</span>
+                                );
+                            })()}
+                        </td>
                         <td className="py-2 px-4 border border-gray-300 text-red-600 font-semibold">
                             {item.return_date
-                                ? new Date(item.return_date).toLocaleDateString(undefined, {
+                                ? new Date(item.return_date + 'T00:00:00').toLocaleDateString(undefined, {
                                     year: 'numeric',
                                     month: 'short',
                                     day: 'numeric',
@@ -72,7 +83,7 @@ export default function Rentals({ rentals }) {
                     <p className ="text-black"><strong>Name:</strong> {selectedRental.name}</p>
                     <p className ="text-black"><strong>Renter:</strong> {selectedRental.renter}</p>
                     <p className ="text-black"><strong>Status:</strong> {selectedRental.status}</p>
-                    <p className ="text-black"><strong>Available Date:</strong> {selectedRental.available_date}</p>
+                    <p className ="text-black"><strong>Rented Date:</strong> {selectedRental.rented_date}</p>
                     <p className ="text-red-500"><strong>Return Date:</strong> {selectedRental.return_date}</p>
                     <p className ="text-black"><strong>Equipment ID:</strong> {selectedRental.id}</p>
                     <p className ="text-black"><strong>Notes:</strong> {selectedRental.notes}</p>

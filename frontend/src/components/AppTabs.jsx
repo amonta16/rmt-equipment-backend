@@ -4,6 +4,7 @@ import AddEquipmentForm from './AddEquipmentForm';
 import DeleteEquipmentForm from './DeleteEquipmentForm';
 import AddRenterForm from './AddRenterForm';
 import DeleteRenterForm from './DeleteRenterForm';
+import Rent from './Rent';
 import Search from './Search';
 import Rentals from './Rentals';
 import Renters from './Renters';
@@ -16,6 +17,7 @@ export default function AppTabs({ equipment, renters, onReload }) {
   const tabs = [
     { label: 'Dashboard', key: 'Dashboard' },
     { label: 'Rent', key: 'Rent' },
+    { label: 'Return', key: 'Return' },
     { label: 'Search', key: 'Search' },
     { label: 'Rentals', key: 'Rentals' },
     { label: 'Renters', key: 'Renters' },
@@ -25,6 +27,7 @@ export default function AppTabs({ equipment, renters, onReload }) {
   ];
   
   const rentals = equipment.filter((item) => item.status !== 'Available');
+  const available = equipment.filter((item) => item.status !== 'Rented');
 
 
   return (
@@ -69,11 +72,13 @@ export default function AppTabs({ equipment, renters, onReload }) {
         </section>
       )}
 
+      {activeTab === 'Rent' && <Rent renters={renters} equipment={available} onUpdate={onReload}/>}
+
       {activeTab === 'Search' && <Search equipment={equipment} />}
 
-      {activeTab === 'Rentals' && <Rentals rentals={rentals} />}
+      {activeTab === 'Rentals' && <Rentals rentals={rentals} renters={renters} />}
 
-      {activeTab === 'Renters' && <Renters renters={renters} />}
+      {activeTab === 'Renters' && <Renters renters={renters} equipment={equipment} />}
 
       {activeTab === 'Scan' && (
         <ScanQR

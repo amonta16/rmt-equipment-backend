@@ -30,3 +30,23 @@ export const deleteRenter = async (id) => {
   return data;
 };
 
+export const updateRenter = async (renter) => {
+  const { data, error } = await supabase
+    .from('renters')
+    .update({
+      name: renter.name,
+      equipment: renter.equipment,
+      email: renter.email,
+      phone: renter.phone,
+      notes: renter.notes,
+    })
+    .eq('id', renter.id)
+
+    if (error) {
+      console.error('Error updating renter:', error);
+      throw error;
+    }
+
+    return data;
+};
+

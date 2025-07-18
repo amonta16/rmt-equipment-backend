@@ -97,7 +97,7 @@ export default function SearchEquipment({ equipment }) {
                     <p className ="text-black"><strong>Name:</strong> {selectedItem.name}</p>
                     <p className ="text-black"><strong>Type:</strong> {selectedItem.type}</p>
                     <p className ="text-black"><strong>Status:</strong> {selectedItem.status}</p>
-                    <p className ="text-black"><strong>Available Date:</strong> {selectedItem.available_date}</p>
+                    <p className ="text-black"><strong>Rented Date:</strong> {selectedItem.rented_date}</p>
                     <p className ="text-red-500"><strong>Return Date:</strong> {selectedItem.return_date}</p>
                     <p className ="text-black"><strong>Equipment ID:</strong> {selectedItem.id}</p>
                     <p className ="text-black"><strong>Notes:</strong> {selectedItem.notes}</p>

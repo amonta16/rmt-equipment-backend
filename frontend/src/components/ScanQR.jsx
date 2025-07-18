@@ -151,7 +151,7 @@ function ScanTab() {
               <strong>Status:</strong> {scannedItem.status}
             </p>
             <p className="text-black mb-1">
-              <strong>Available:</strong> {scannedItem.available_date}
+              <strong>Return:</strong> {scannedItem.rented_date}
             </p>
             <p className="text-red-500 mb-1">
               <strong>Return:</strong> {scannedItem.return_date}

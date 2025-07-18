@@ -66,7 +66,7 @@ function EquipmentList({ equipment }) {
               <h3 className="text-2xl font-bold mb-2 text-black">{selectedItem.name}</h3>
               <p className="text-black mb-1"><strong>Type:</strong> {selectedItem.type}</p>
               <p className="text-black mb-1"><strong>Status:</strong> {selectedItem.status}</p>
-              <p className="text-black mb-1"><strong>Available:</strong> {selectedItem.available_date}</p>
+              <p className="text-black mb-1"><strong>Rented:</strong> {selectedItem.rented_date}</p>
               <p className="text-red-500 mb-1"><strong>Return:</strong> {selectedItem.return_date}</p>
               <p className="text-black mb-1"><strong>ID:</strong> {selectedItem.id}</p>
               {selectedItem.notes && (

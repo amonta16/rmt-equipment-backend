@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Renters({ renters }) {
+export default function Renters({ renters, equipment }) {
   if (!renters || renters.length === 0) {
     return <p>No active renters.</p>;
   }
@@ -31,10 +31,24 @@ export default function Renters({ renters }) {
                     <tr 
                         key={renter.id} 
                         className="hover:bg-gray-100 hover:-translate-y-1 hover:shadow-md cursor-default transition-transform"
-                        onClick={() => setSelectedRenter(renter)}
+                        onClick={() => setSelectedRenter(renter)
+                        }
                     >
                         <td className="text-black py-2 px-4 border border-gray-300">{renter.name || 'Unknown'}</td>
-                        <td className="text-black py-2 px-4 border border-gray-300 font-bold">{renter.equipment || 'Unknown'}</td>
+                        <td className="text-black py-2 px-4 border border-gray-300 font-bold">
+                            {Array.isArray(renter.equipment) && renter.equipment.length > 0 ? (
+                                renter.equipment.map((id) => {
+                                    const eqItem = equipment.find((item) => item.id === id);
+                                    return (
+                                        <span key={id} className="inline-block mr-4">
+                                            {eqItem ? eqItem.name + " - " + eqItem.id : `Unknown(${id})`}
+                                        </span>
+                                    );
+                                })
+                            ) : (
+                                'None'
+                            )}
+                        </td>
                         <td className="text-black py-2 px-4 border border-gray-300">{renter.email || 'Unknown'}</td>
                         <td className="text-black py-2 px-4 border border-gray-300">{renter.phone || 'Unknown'}</td>
 
@@ -63,7 +77,20 @@ export default function Renters({ renters }) {
                     </button>
                     <h3 className="text-lg text-black font-bold mb-2">Renter Details</h3>
                     <p className ="text-black"><strong>Name:</strong> {selectedRenter.name}</p>
-                    <p className ="text-black"><strong>Rented Equipment:</strong> {selectedRenter.equipment}</p>
+                    <p className ="text-black"><strong>Rented Equipment: </strong> 
+                        {Array.isArray(selectedRenter.equipment) && selectedRenter.equipment.length > 0 ? (
+                            selectedRenter.equipment.map((id) => {
+                                const eqItem = equipment.find((item) => item.id === id);
+                                return (
+                                    <span key={id} className="inline-block mr-4">
+                                        {eqItem ? eqItem.name + " - " + eqItem.id : `Unknown(${id})`}
+                                    </span>
+                                );
+                            })
+                        ) : (
+                            'None'
+                        )}
+                    </p>
                     <p className ="text-black"><strong>Email:</strong> {selectedRenter.email}</p>
                     <p className ="text-black"><strong>Phone Number:</strong> {selectedRenter.phone}</p>
                     <p className ="text-black"><strong>Renter ID:</strong> {selectedRenter.id}</p>
